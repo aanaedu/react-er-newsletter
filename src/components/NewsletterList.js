@@ -1,34 +1,30 @@
-import React, {Component} from 'react';
-import NewsletterDetail from './NewsletterDetail';
+import React from 'react';
+import NewsletterItem from './NewsletterItem';
 
-class NewsletterList extends Component {
-    constructor() {
-        super();
-        this.newsletterItems = '';
-    }
+const NewsletterList = (props) => {
+    const { items } = props;
+    const itemsLength = items && items.length;
 
-    buildNewsletter() {
-        if (this.props.newsletters) {
-            this.newsletterItems = this.props.newsletters.map(newsletterObj => {
-                return (
-                    <NewsletterDetail key={newsletterObj.id.toString()} category={newsletterObj.category} items={newsletterObj.items}/>
-                );
-            });
-        }
-    }
+    return (
+        <div className="newsletter">
+            <div className="row">
+                <div className="col-md-12">
+                    {items.map((item, index) => {
+                        const isLastItem = (index === itemsLength - 1);
 
-    render() {
-        this.buildNewsletter();
-        return (
-            <div className="newsletter">
-                <div className="row">
-                    <div className="col-md-12">
-                        {this.newsletterItems}
-                    </div>
+                        return (
+                            <NewsletterItem
+                                key={item.id.toString()}
+                                item={item}
+                                itemIndex={index}
+                                isLastItem={isLastItem}
+                            />
+                        )}
+                    )}
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default NewsletterList;
