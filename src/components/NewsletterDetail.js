@@ -1,47 +1,27 @@
-import React, {Component} from 'react';
-import NewsletterItem from './NewsletterItem';
+import React from 'react';
+import NewsletterList from './NewsletterList';
 
-class NewsletterDetail extends Component {
+const NewsletterDetail = (props) => {
+    const { data } = props;
 
-    constructor() {
-        super();
-        this.newsletterItems = '';
-    }
-
-    buildNewsletter() {
-        if (this.props.items) {
-            const items = this.props.items;
-            const itemsLength = items.length;
-
-            this.newsletterItems = items.map((item, index) => {
+    return (
+        <div className="newsletter">
+            {data.map(dataItem => {
+                const { id, category, items } = dataItem;
                 return (
-                    <NewsletterItem
-                        key={item.id.toString()}
-                        data={item}
-                        itemsLength={itemsLength}
-                        index={index}
-                    />
-                );
-            });
-        }
-    }
-
-    render() {
-        this.buildNewsletter();
-        return (
-            <div className="newsletter">
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="newsletter__section">
-                            <h3 className="newsletter__section-heading"> {this.props.category} </h3>
-                            <hr className="newsletter__section-divider"/>
+                    <div className="row" key={id.toString()}>
+                        <div className="col-md-12">
+                            <div className="newsletter__section">
+                                <h3 className="newsletter__section-heading"> {category} </h3>
+                                <hr className="newsletter__section-divider"/>
+                            </div>
+                            <NewsletterList items={items}/>
                         </div>
-                        {this.newsletterItems}
                     </div>
-                </div>
-            </div>
-        );
-    }
-}
+                );
+            })}
+        </div>
+    );
+};
 
 export default NewsletterDetail;

@@ -1,41 +1,25 @@
-import React, {Component} from 'react';
-import AchievementItem from './AchievementItem';
+import React from 'react';
+import AchievementList from './AchievementList';
 
-class AchievementDetail extends Component {
-    constructor() {
-        super();
-        this.achievementItems = '';
-    }
+const AchievementDetail = (props) => {
+    const { data } = props;
+    
+    return (
+        <div className="achievements">
+            {data.map(dataItem => {
+                const { id, year, items } = dataItem;
 
-    buildAchievement() {
-        if (this.props.items) {
-            const items = this.props.items;
-            const itemsLength = items.length;
-
-            this.achievementItems = items.map((item, index) => {
                 return (
-                    <AchievementItem
-                        key={item.id.toString()}
-                        data={item}
-                        itemsLength={itemsLength}
-                        index={index}
-                    />
+                    <div className="row" key={id.toString()}>
+                        <div className="col-md-12">
+                            <h3 className="achievement__title"> {year} Achievements</h3>
+                        </div>
+                        <AchievementList items={items}/>
+                    </div>
                 );
-            });
-        }
-    }
-
-    render() {
-        this.buildAchievement();
-        return (
-            <div className="row">
-                <div className="col-md-12">
-                    <h3 className="achievement__title"> {this.props.year} Achievements</h3>
-                </div>
-                {this.achievementItems}
-            </div>
-        );
-    }
+            })}
+        </div>
+    );
 }
 
 export default AchievementDetail;

@@ -1,62 +1,61 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class NewsletterItem extends Component {
+const NewsletterMedia = (props) => {
+    const { item } = props;
 
-    getImageTemplate(item) {
-        if (item && item.imageUrl) {
-            return <img src={item.imageUrl} alt={item.title}
-                        className="img-responsive newsletter__media newsletter__image"/>;
-        } else if (item && item.videoUrl) {
-            return <img src={item.videoUrl} alt={item.title}
-                        className="img-responsive newsletter__media newsletter__image"/>;
+    if (item) {
+        if (item.imageUrl) {
+            return <img 
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="img-responsive newsletter__media newsletter__image"
+                    />;
+        } else if (item.videoUrl) {
+            return <img 
+                        src={item.videoUrl}
+                        alt={item.title}
+                        className="img-responsive newsletter__media newsletter__image"
+                    />;
         }
-        return null;
-    }
+    } 
+    return null;
+}
 
-    getAdditionInfo(index, item) {
-        if(index === 0) {
-            return (item.videoUrl)
-                    ? ''
-                    : <div>
-                            <div className="clearfix"></div>
-                            <div className="newsletter__excerpt">
-                                {item.excerpt} <span><i className="fa fa-long-arrow-right text-primary"></i> </span>
-                            </div>
-                      </div>
-        } else {
-            return (item.videoUrl) ? '' : <span><i className="fa fa-long-arrow-right text-primary"></i> </span>
-        }
+const getAdditionInfo = (item, itemIndex) => {
+    if(itemIndex === 0) {
+        return (item.videoUrl)
+                ? ''
+                : <div>
+                        <div className="clearfix"></div>
+                        <div className="newsletter__excerpt">
+                            {item.excerpt} <span><i className="fa fa-long-arrow-right text-primary"></i> </span>
+                        </div>
+                  </div>
+    } else {
+        return (item.videoUrl) ? '' : <span><i className="fa fa-long-arrow-right text-primary"></i> </span>
     }
+}
 
-    getDividerTemplate(index, itemsLength) {
-        return (index === itemsLength - 1) ? '' : <hr className="newsletter__item-divider"/>
-    }
+const NewsletterItem = (props) => {
+    const { item, isLastItem, itemIndex } = props;
+    const itemClass = isLastItem ? 'newsletter__item newsletter__item--last' : 'newsletter__item';
 
-    render() {
-        const item = this.props.data;
-        const index = this.props.index;
-        const itemsLength = this.props.itemsLength;
-        const itemClass = (index === itemsLength - 1) ? 'newsletter__item newsletter__item--last' : 'newsletter__item';
-        const additionalInfoTemplate = this.getAdditionInfo(index, item);
-        const imageTemplate = this.getImageTemplate(item);
-        const dividerTemplate = this.getDividerTemplate(index, itemsLength);
-        return (
-            <div className={itemClass}>
-                <h4 className="newsletter__heading">{item.title}</h4>
-                {imageTemplate}
-                <div className="newsletter__extra-info">
-                    <div className="newsletter__additional-info mr-20">{item.additionalInfo}</div>
-                    <div className="newsletter__socials">
-                        <a className="text-muted"><i className="fa fa-twitter mr-20"></i></a>
-                        <a className="text-muted"><i className="fa fa-facebook mr-20"></i> </a>
-                    </div>
-                    {additionalInfoTemplate}
+    return (
+        <div className={itemClass}>
+            <h4 className="newsletter__heading">{item.title}</h4>
+            <NewsletterMedia item={item} />
+            <div className="newsletter__extra-info">
+                <div className="newsletter__additional-info mr-20">{item.additionalInfo}</div>
+                <div className="newsletter__socials">
+                    <a href="http://twitter.com/placeholder" className="text-muted"><i className="fa fa-twitter mr-20"></i></a>
+                    <a href="http://facebook/placeholder" className="text-muted"><i className="fa fa-facebook mr-20"></i> </a>
                 </div>
-                <div className="clearfix"></div>
-                {dividerTemplate}
+                {getAdditionInfo(item, itemIndex)}
             </div>
-        );
-    }
+            <div className="clearfix"></div>
+            {isLastItem && <hr className="newsletter__item-divider"/>}
+        </div>
+    );
 }
 
 export default NewsletterItem;
